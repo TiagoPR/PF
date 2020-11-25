@@ -1,0 +1,20 @@
+Comandos no Terminal:	
+
+cd <dir> -> abrir uma diretoria (cd Desktop/PF)
+quit -> fecha o terminal
+ls -> lista os ficheiros e pastas na presente diretoria 
+ghci <fich.hs> -> compila ficheiro de Haskell
+
+
+Compilador de Haskell (GHCI):
+
+:t <funct> -> indica os tipos de uma função 
+:r -> reload ao ficheiro compilado (guardar sempre no Sublime [control + S])
+:q -> fecha o compilador (útil quando dá erro ao compilar o ficheiro [quando aparece prelude])
+funct a ... -> executa a função "funct" que recebe os parâmetros a ... (soma 3 2)
+
+
+
+
+
+
