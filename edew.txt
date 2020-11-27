@@ -1,0 +1,13 @@
+sortOn' :: Ord b => (a->b) -> [a] -> [a]
+sortOn' f [] = []
+sortOn' f (x:xs) = insert' f x (sortOn' f xs)
+
+insert' :: Ord b => (a->b) -> a -> [a] -> [a]
+insert' _ y []   = [y+]
+insert' f y (h:t)
+  |(f y)<=(f h) = y:x:xs 
+  |otherwise = x:(insert' f y xs)
+
+--isort :: [a] -> [a]
+--isort [] = []
+--isort (x:xs) = insert x (isort xs)
