@@ -56,6 +56,27 @@ conta' g p = foldl (\acc m -> if (g == snd m) then acc + 1 else acc) 0 p
 grau :: Polinomio -> Int 
 grau p =    -}
 
+-- g)
+
+mult :: Monomio -> Polinomio -> Polinomio  -- Tenho de fazer com funções de ordem superior
+mult m [] = []
+mult (c,e) ((c1,e1):t) = ((c*c1),(e+e1)) : mult (c,e) t
+
+-- i)
+{- 
+normaliza :: Polinomio -> Polinomio            Não é necessário
+normaliza [] = []
+normaliza p = (norm (ordena p))
+ -}
+norm [] = []
+norm p = foldl (\((c,e):p) (c1,e1) -> if (e == e1) then ((c+c1,e):p) else (c1,e1) : ((c,e):p) ) m p
+
+-- k)
+
+produto :: Polinomio -> Polinomio -> Polinomio
+produto [] p = []
+produto p1 p2 = concat (map (\m -> (mult m p2)) p1)
+
 -- Exercicio 3
 
 -- a) 
@@ -66,12 +87,20 @@ dimOK [x] = True
 dimOK (h:x:t) = if ((length h) == (length x)) then dimOK (x:t)
     else False
 
+-- Versão da aula
+
+dimOK' (l:ls) = all(\x -> length x == length l) ls
+
 -- b)
 
 dimMat :: Mat a -> (Int,Int)
 dimMat [] = (0,0)
 dimMat (h:t)
     | (dimOK (h:t)) = (length (h:t),length h)
+
+-- Versão da aula
+dimMat' [] = (0,0)
+dimMat' (l:ls) = (length (l:ls) , length l)
 
 -- c) 
 
@@ -94,9 +123,18 @@ transpose [] = []
 transpose ([]:_) = []        -- uma vez que vai chegar a ter a head : empty list
 transpose m = (map head m) : (transpose (map tail m)) -- map (função) argumento
 
+-- Versão da aula
+
+transpose' [] = []
+transpose' m = (map (head) m) : transpose' (map (tail) m) -- igual
+
 -- e)
 
 multMat :: Num a => Mat a -> Mat a -> Mat a
 multMat m m1
-    | (length m) != (length m1) = error "incorrect dim"
-    | otherwise = ...
+        | (col1 == lin2) = [[sum (zipWith (*) l l2) | l2 <- (transpose m1)] | l <- m]
+        | otherwise = error "incorrect dim"
+    where
+        (_ , col1) = dimMat' m
+        (lin2 , _) = dimMat' m1 
+
