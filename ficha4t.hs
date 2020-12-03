@@ -97,3 +97,10 @@ max' [] _ maxi = maxi
 max' (h:t) total maxi
     if maxi > (total + h) then max' t (total + h) maxi
         else max' t (total + h) (total + h)
+
+-- 8
+
+fib :: Int -> Int 
+fib 0 = 0
+fib 1 = 1
+-- nao sei
