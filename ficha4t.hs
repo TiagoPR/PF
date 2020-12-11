@@ -63,16 +63,16 @@ nzp (h:t)
 
 -- 5
 
-divMod :: Integral a => a -> a -> (a,a)
-divMod _ 0 = error "divisao por 0"
-divMod x y
+divMod' :: Integral a => a -> a -> (a,a)
+divMod' _ 0 = error "divisao por 0"
+divMod' x y
         | (x < 0 && y > 0) || (x>0 && y<0) = (-respos,rpos)
         | (x < 0 && y < 0) = (respos,rpos)
         | ((x - y) < 0) = (0,x)
         | otherwise = (res + 1, r)
     where
-        (res,r) = divMod (x-y) y
-        (respos, rpos) = (divMod (abs x) (abs y))
+        (res,r) = divMod' (x-y) y
+        (respos, rpos) = (divMod' (abs x) (abs y))
     
 -- 6
 
@@ -86,7 +86,8 @@ fromDigits' (h:t) acc = fromDigits' t (h + 10 * acc)
 -- 7
 
 maxSumInit :: (Num a, Ord a) => [a] -> a
-maxSumInit l = maximum [sum m | m <- inits l]
+maxSumInit [] = 0
+maxSumInit (h:t) = max' t h h
 
 -- Solução:
 maxSumInit' :: (Num a ,Ord a) => [a] -> a
@@ -94,13 +95,15 @@ maxSumInit' [] = 0
 maxSumInit' (h:t) = max' t h h
 
 max' [] _ maxi = maxi
-max' (h:t) total maxi
+max' (h:t) total maxi = 
     if maxi > (total + h) then max' t (total + h) maxi
-        else max' t (total + h) (total + h)
+    else max' t (total + h) (total + h)
 
 -- 8
 
 fib :: Int -> Int 
-fib 0 = 0
-fib 1 = 1
--- nao sei
+fib n = fib' n 0 1
+    where
+        fib' :: Int -> Int -> Int -> Int
+        fib' 0 acc_n acc_nplus = acc_n
+        fib' n acc_n acc_nplus = fib' (n-1) (acc_nplus) (acc_nplus + acc_n)
