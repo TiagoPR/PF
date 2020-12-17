@@ -9,6 +9,8 @@
     (tipo da função) a -> a-> a
     (tipo do tipo a) a é uma instância da classe Num
 
+    
+
 Classes em Haskell
 
 -------------------------------------------------------
