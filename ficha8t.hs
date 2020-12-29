@@ -1,3 +1,5 @@
+import Data.List
+
 -- Exercicio 1
 
 data Frac = F Integer Integer -- (deriving show) para corrigir o erro abaixo
@@ -20,7 +22,7 @@ mdc x y = mdc y (x `mod` y)
 
 -- pode correr mal se a multiplicação for um Integer muito grande
 
-instance Eq Frac where
+instance Eq Frac where                                                                      
     (F x y) == (F x1 y1) = (x * y1) == (y * x1)
 
     --                 ou (normaliza(F x y)) == (normaliza (F x1 y1))
@@ -72,6 +74,20 @@ data Exp a = Const a
     | Menos (Exp a) (Exp a)
     | Mult (Exp a) (Exp a)
 
+-- a)
+
+instance Show a => Show (Exp a) where                                    -- temos de buscar a instancia de Show a pq nao sabemos o tipo de a
+    show (Const a) = show a                                              -- Enquanto que nos exs acima sabiamos que era Integer
+    show (Simetrico a) = "(- " ++ show a ++ ")"
+    show (Mais a b) = "(" ++ show a ++ "+" ++ show b ++ ")"
+    show (Menos a b) = "(" ++ show a ++ "-" ++ show b ++ ")"
+    show (Mult a b) = "(" ++ show a ++ "*" ++ show b ++ ")"
+
+
+-- b)
+
+instance (Eq a, Num a) => Eq (Exp a) where      -- Temos de instanciar o Num a pq usamos a funcao calcula que precisa da classe Num
+    x == y = (calcula x) == (calcula y)
 
 -- c)
 
@@ -89,3 +105,28 @@ instance Num a => Num (Exp a) where
     signum c = Const (signum (calcula c))
     abs c = c * signum c
     fromInteger n = Const (fromInteger n)
+
+-- Exercicio 3
+
+data Movimento = Credito Float | Debito Float
+data Data = D Int Int Int deriving Eq    -- na alinea a) estava com erro pq nao tinha instancia de Eq , logo temos de fazer (deriving Eq)
+data Extracto = Ext Float [(Data, String, Movimento)]
+
+-- a)
+
+instance Ord Data where
+    compare (D a m d) (D a2 m2 d2)
+        | (a >= a2) && (m >= m2) && (d > d2) = GT
+        | (a == a2) && (m == m2) && (d == d2) = EQ
+        | otherwise = LT
+
+-- b)
+
+instance Show Data where
+    show (D a m d) = show a ++ "/" ++ show m ++ "/" ++ show d
+    -- show (D dia mes ano) = concat $ intersperse "/" $ map (show) [dia,mes,ano]    * tentar ver como funciona
+
+-- c)
+-- (Ext 100 [((D 2020 12 22),"Compras 2020",Credito 20),((D 2019 12 22),"Compras 2019",Credito 20)])
+ordena :: Extracto -> Extracto
+ordena (Ext n l) = (Ext n (sortBy (\(data1,_,_) (data2,_,_) -> compare data1 data2) l))

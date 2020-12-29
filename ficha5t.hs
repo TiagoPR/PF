@@ -51,10 +51,25 @@ conta g p = length (selgrau g p)
 
 conta' g p = foldl (\acc m -> if (g == snd m) then acc + 1 else acc) 0 p
 
--- c
-{- 
+-- c)
+
 grau :: Polinomio -> Int 
-grau p =    -}
+grau p = foldl (\acc x -> if (acc > snd x) then acc else snd x) 0 p
+
+-- d)
+
+deriv :: Polinomio -> Polinomio
+deriv p = map (\(b,e) -> if e > 0 then (b * fromIntegral e, e - 1) else (0,0)) p   -- (*) tem de ser do mesmo tipo
+
+-- e)
+
+calcula :: Float -> Polinomio -> Float                             -- Não entendo a questão.
+calcula n p = foldl (\acc (b,e) -> acc + b * (n ^ e)) 0 p          -- (^) pode ter tipos diferentes
+
+-- f)
+
+simp :: Polinomio -> Polinomio
+simp p = filter (\(c,e) -> c /= 0) p
 
 -- g)
 
@@ -62,14 +77,26 @@ mult :: Monomio -> Polinomio -> Polinomio  -- Tenho de fazer com funções de or
 mult m [] = []
 mult (c,e) ((c1,e1):t) = ((c*c1),(e+e1)) : mult (c,e) t
 
+-- ou
+
+mult1 :: Monomio -> Polinomio -> Polinomio                  -- CONSEGUIIIIIIIIIIIIIIIIIIIIIIIIII!
+mult1 (c1,e1) p = map (\(c,e) -> (c*c1, e*e1)) p
+
+
+-- h)
+
+ordena :: Polinomio -> Polinomio
+ordena p = reverse (sortOn (snd) p)
+
+
 -- i)
 {- 
 normaliza :: Polinomio -> Polinomio            Não é necessário
 normaliza [] = []
 normaliza p = (norm (ordena p))
  -}
-norm [] = []
-norm p = foldl (\((c,e):p) (c1,e1) -> if (e == e1) then ((c+c1,e):p) else (c1,e1) : ((c,e):p) ) m p
+-- norm [] = []
+-- norm p = foldl (\((c,e):p) (c1,e1) -> if (e == e1) then ((c+c1,e):p) else (c1,e1) : ((c,e):p) ) m p
 
 -- k)
 
