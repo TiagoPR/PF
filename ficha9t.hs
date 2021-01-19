@@ -20,7 +20,7 @@ gerarBingo l
                          -- ou  else print p >> gerarBingo (p:l)
 
 -- b)
-
+{- 
 mastermind :: IO ()
 mastermind = do c <- gerarCodigo 
                 mastermind' c
@@ -59,3 +59,21 @@ checkNotOK [] _ = 0
 checkNotOK (x:xs) c u
     | elem x cu = 1 + checkNotOK xs (delete x cu)
     | otherwise = checkNotOK xs cu
+
+ -}
+------------------------------------- RE-DO --------------------------------------------
+
+-- 1)
+
+--a 
+
+bingo' :: IO ()
+bingo' = bingoaux []
+
+bingoaux :: [Int] -> IO ()
+bingoaux l
+    | (length l == 90) = return ()
+    | otherwise = do x <- getLine
+                     valor <- randomRIO (1,90) 
+                     if (valor `elem` l) then (bingoaux l) 
+                     else print valor >> bingoaux (valor : l)

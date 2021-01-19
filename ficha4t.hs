@@ -107,3 +107,25 @@ fib n = fib' n 0 1
         fib' :: Int -> Int -> Int -> Int
         fib' 0 acc_n acc_nplus = acc_n
         fib' n acc_n acc_nplus = fib' (n-1) (acc_nplus) (acc_nplus + acc_n)
+
+
+--------------- RE-DO ----------------------------------------------
+
+-- 3)
+
+ex3 :: String -> (String,String)
+ex3 [] = ([],[])
+ex3 l = foldl (\(a,b) x -> if (isDigit x) then (a,x:b) else (x:a,b)) ([],[]) l
+
+-- 4)
+
+ex4 :: [Int] -> (Int,Int,Int)
+ex4 [] = (0,0,0)
+ex4 l = foldl (\(a,b,c) x -> if (x > 0) then (a,b,c+1) else if (x < 0) then (a+1,b,c) else (a,b+1,c)) (0,0,0) l
+
+-- 7)
+
+ex7 :: (Num a, Ord a) => [a] -> a   -- é isto que pedem ne?
+ex7 [] = 0
+ex7 l = sum l
+
